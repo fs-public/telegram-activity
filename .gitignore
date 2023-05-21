@@ -1,0 +1,8 @@
+# Logs and modules
+*.log
+.DS_Store
+node_modules
+dist
+
+# Data
+data
