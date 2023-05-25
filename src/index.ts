@@ -13,7 +13,7 @@ const analyzeHtml = (textRaw: string) => {
     const root = parse(textRaw) // parsed HTML object
     const nodes = root.querySelectorAll(".from_name")
 
-    for (let node of nodes) {
+    for (const node of nodes) {
         assert(node && node.childNodes && node.childNodes.length >= 1, "Invalid from_name node")
 
         const user = node.childNodes[0].rawText.trim()
@@ -31,7 +31,7 @@ const main = async () => {
 
     const files = getAllFiles(MESSAGES_DIRECTORY)
 
-    for (let file of files) {
+    for (const file of files) {
         textsRaw.push(await readFile(file))
     }
 
@@ -53,7 +53,7 @@ const main = async () => {
         userCountPerBracket[getBracketName(i)] = 0
     }
 
-    for (let u of users) {
+    for (const u of users) {
         const bracket = getBracket(userHits[u])
         userCountPerBracket[getBracketName(bracket)] += 1
     }

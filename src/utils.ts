@@ -1,5 +1,4 @@
 import fs from "fs"
-import readline from "readline"
 
 // Standard input/output
 
@@ -16,7 +15,7 @@ export const delay = async (time: number) => {
 // Files
 
 export const readFile = async (filename: string) => {
-    const buffer = await fs.readFileSync(filename)
+    const buffer = fs.readFileSync(filename)
     return buffer.toString()
 }
 
