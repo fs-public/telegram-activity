@@ -1,26 +1,18 @@
 import fs from "fs"
-import readline from "readline"
 
-// Standard input/output
+// Assertions
 
 export const assert = (condition: boolean, message?: string) => {
     if (!condition) throw new Error(message || "Error Encountered!")
 }
 
-export const delay = async (time: number) => {
-    if (time == 0) return
-
-    await new Promise(resolve => setTimeout(resolve, time))
-}
-
 // Files
 
-export const readFile = async (filename: string) => {
-    const buffer = await fs.readFileSync(filename)
-    return buffer.toString()
+export const readFile = (filename: string) => {
+    return fs.readFileSync(filename).toString()
 }
 
-export const writeFile = async (filename: string, data: string) => {
+export const writeFile = (filename: string, data: string) => {
     return fs.writeFileSync(filename, data)
 }
 

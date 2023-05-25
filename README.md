@@ -1,103 +1,48 @@
-# TSDX User Guide
+# Telegram Activity
 
-Congrats! You just saved yourself hours of work by bootstrapping this project with TSDX. Let’s get you oriented with what’s here and how to use it.
+NodeJS utility to parse and analyze Telegram group or channel activity for a breakdown of unique active users.
 
-> This TSDX setup is meant for developing libraries (not apps!) that can be published to NPM. If you’re looking to build a Node app, you could use `ts-node-dev`, plain `ts-node`, or simple `tsc`.
+### Installation
 
-> If you’re new to TypeScript, checkout [this handy cheatsheet](https://devhints.io/typescript)
-
-## Commands
-
-TSDX scaffolds your new library inside `/src`.
-
-To run TSDX, use:
+The project is not published on npmjs. Please pull the source to a local directory, then run the following command.
 
 ```bash
-npm start # or yarn start
+npm install
 ```
 
-This builds to `/dist` and runs the project in watch mode so any edits you save inside `src` causes a rebuild to `/dist`.
+After dependencies are installed, simply run `npm run build` for a one-time build or `npm run watch` for real-time compilation.
 
-To do a one-off build, use `npm run build` or `yarn build`.
+Analysis launches with simple `node .` or an npm script `npm start`.
 
-To run tests, use `npm test` or `yarn test`.
+### Technology
 
-## Configuration
+Project runs with `npm` and `node` and has been initialized as a Typescript project with `tsdx`. Primary required library to parse Telegram exports is `node-html-parser`. Code quality assured by `prettier`, and `eslint`.
 
-Code quality is set up for you with `prettier`, `husky`, and `lint-staged`. Adjust the respective fields in `package.json` accordingly.
+### Usage
 
-### Jest
+To analyze a specific Telegram group or channel, open it with Telegram Desktop and export everything (_note that some channels might automatically block you for doing so, as this action creates a very large number of requests_). Move the `.html` files of the export to `./data` directory.
 
-Jest tests are set up to run with `npm test` or `yarn test`.
+To analyze over specific timeframe, simply include only the `.html` files corresponding to the timeframe as they are exported sequentially. In this case, for best behavior, make sure to fix the file sequence (e.g. `messages2` -> `messages02` so that they follow naturally). No additional curation of the files is needed.
 
-### Bundle Analysis
+Results of the analysis, i.e. number of unique active users, are outputted in the console in a table breakdown based on the number of messages sent (as found within the export).
 
-[`size-limit`](https://github.com/ai/size-limit) is set up to calculate the real cost of your library with `npm run size` and visualize the bundle with `npm run analyze`.
+An example output follows. This can be read as "there are 32 unique users that sent between 6-9 messages". Custom brackets for this output can be configured in `./src/config.ts`.
 
-#### Setup Files
-
-This is the folder structure we set up for you:
-
-```txt
-/src
-  index.tsx       # EDIT THIS
-/test
-  blah.test.tsx   # EDIT THIS
-.gitignore
-package.json
-README.md         # EDIT THIS
-tsconfig.json
+```
+|-------------------------|
+│ (messages)  │  Values   │
+|-------------------------|
+│      1      │   221     │
+│     2-5     │   169     │
+│     6-9     │    24     │
+│    10-19    │    25     │
+│    20-49    │    14     │
+│    50-99    │    19     │
+│    100+     │     3     │
+|-------------------------|
 ```
 
-### Rollup
+### Limitations
 
-TSDX uses [Rollup](https://rollupjs.org) as a bundler and generates multiple rollup configs for various module formats and build settings. See [Optimizations](#optimizations) for details.
-
-### TypeScript
-
-`tsconfig.json` is set up to interpret `dom` and `esnext` types, as well as `react` for `jsx`. Adjust according to your needs.
-
-## Continuous Integration
-
-### GitHub Actions
-
-Two actions are added by default:
-
-- `main` which installs deps w/ cache, lints, tests, and builds on all pushes against a Node and OS matrix
-- `size` which comments cost comparison of your library on every pull request using [`size-limit`](https://github.com/ai/size-limit)
-
-## Optimizations
-
-Please see the main `tsdx` [optimizations docs](https://github.com/palmerhq/tsdx#optimizations). In particular, know that you can take advantage of development-only optimizations:
-
-```js
-// ./types/index.d.ts
-declare var __DEV__: boolean;
-
-// inside your code...
-if (__DEV__) {
-  console.log('foo');
-}
-```
-
-You can also choose to install and use [invariant](https://github.com/palmerhq/tsdx#invariant) and [warning](https://github.com/palmerhq/tsdx#warning) functions.
-
-## Module Formats
-
-CJS, ESModules, and UMD module formats are supported.
-
-The appropriate paths are configured in `package.json` and `dist/index.js` accordingly. Please report if any issues are found.
-
-## Named Exports
-
-Per Palmer Group guidelines, [always use named exports.](https://github.com/palmerhq/typescript#exports) Code split inside your React app instead of your React library.
-
-## Including Styles
-
-There are many ways to ship styles, including with CSS-in-JS. TSDX has no opinion on this, configure how you like.
-
-For vanilla CSS, you can include it at the root directory and add it to the `files` section in your `package.json`, so that it can be imported separately by your users and run through their bundler's loader.
-
-## Publishing to NPM
-
-We recommend using [np](https://github.com/sindresorhus/np).
+-   The functionality may break with a change to Telegram export format.
+-   Forwarded messages are not computed correctly (they are double-counted as if the original sender, possibly from a different chat, sent the message as well)
