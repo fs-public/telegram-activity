@@ -1,8 +1,13 @@
-const { assert } = require("./utils")
+/* eslint-disable */
+
 const { parse, valid } = require("node-html-parser")
 const { workerData, parentPort } = require("worker_threads")
 
-const analyzeTelegramHtml = (textRaw: string, userHits: { [name: string]: number }) => {
+const assert = (condition, message) => {
+    if (!condition) throw new Error(message || "Error Encountered!")
+}
+
+const analyzeTelegramHtml = (textRaw, userHits) => {
     assert(valid(textRaw), "Invalid HTML")
 
     const root = parse(textRaw) // parsed HTML object
@@ -18,13 +23,16 @@ const analyzeTelegramHtml = (textRaw: string, userHits: { [name: string]: number
     }
 }
 
-export const analysePartial = () => {
-    const userHits: { [name: string]: number } = {}
+const analysePartial = () => {
+    const userHits = {}
+    console.log("Length:", workerData.contents.length)
 
     for (let i = 0; i < workerData.contents.length; i++) {
         console.log("Analyzing", workerData.files[i])
         analyzeTelegramHtml(workerData.contents[i], userHits)
     }
 
-    parentPort?.postMessage(userHits)
+    parentPort.postMessage(userHits)
 }
+
+analysePartial()

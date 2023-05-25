@@ -1,7 +1,15 @@
 import { HIT_BRACKETS, MESSAGES_DIRECTORY } from "./config"
 import { getAllFiles, readFile } from "./utils"
 import { getBracket, getBracketName } from "./brackets"
-import { analyzeTelegramHtml, userHits } from "./analysis"
+import { Worker } from "worker_threads"
+
+const spawnWorker = (workerData: any): Promise<{ [name: string]: number }> => {
+    return new Promise(resolve => {
+        const worker = new Worker("./src/analysis.js", { workerData })
+        worker.on("message", data => resolve(data))
+        //worker.on("error")
+    })
+}
 
 const main = async () => {
     // Initialize /////////////////////////////////////////
@@ -14,10 +22,8 @@ const main = async () => {
     console.log("All", files.length, "files loaded.")
 
     // Analyze /////////////////////////////////////////
-    for (let i = 0; i < contents.length; i++) {
-        console.log("Analyzing", files[i])
-        analyzeTelegramHtml(contents[i])
-    }
+
+    const userHits = await spawnWorker({ files: files.slice(0, 10), contents: contents.slice(0, 10) })
 
     const users = Object.keys(userHits)
 
