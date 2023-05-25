@@ -1,7 +1,7 @@
 /* eslint-disable */
 
-const { parse, valid } = require("node-html-parser")
-const { workerData, parentPort } = require("worker_threads")
+import { parse, valid } from "node-html-parser"
+import { workerData, parentPort } from "worker_threads"
 
 const assert = (condition, message) => {
     if (!condition) throw new Error(message || "Error Encountered!")
