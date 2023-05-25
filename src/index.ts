@@ -7,7 +7,7 @@ let analyzedFiles = 0
 
 const spawnWorker = (workerData: any): Promise<{ [name: string]: number }> => {
     return new Promise((resolve, reject) => {
-        const worker = new Worker("./src/analysis.js", { workerData })
+        const worker = new Worker("./dist/analysis.js", { workerData })
         worker.on("message", data => {
             if (typeof data === "number") analyzedFiles += data
             else resolve(data)
