@@ -25,10 +25,8 @@ const analyzeTelegramHtml = (textRaw, userHits) => {
 
 const analysePartial = () => {
     const userHits = {}
-    console.log("Length:", workerData.contents.length)
 
     for (let i = 0; i < workerData.contents.length; i++) {
-        console.log("Analyzing", workerData.files[i])
         analyzeTelegramHtml(workerData.contents[i], userHits)
     }
 

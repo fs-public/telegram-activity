@@ -1,4 +1,4 @@
-import { HIT_BRACKETS, MESSAGES_DIRECTORY } from "./config"
+import { HIT_BRACKETS, MAX_WORKER_THREADS, MESSAGES_DIRECTORY } from "./config"
 import { getAllFiles, readFile } from "./utils"
 import { getBracket, getBracketName } from "./brackets"
 import { Worker } from "worker_threads"
@@ -23,7 +23,26 @@ const main = async () => {
 
     // Analyze /////////////////////////////////////////
 
-    const userHits = await spawnWorker({ files: files.slice(0, 10), contents: contents.slice(0, 10) })
+    const totalThreads = Math.min(Math.round(files.length / 25), MAX_WORKER_THREADS)
+    const filesPerThread = Math.ceil(files.length / totalThreads)
+
+    console.log("Spawning", totalThreads, "worker threads")
+
+    const workers = [...Array(totalThreads)].fill(undefined).map((_, i) => {
+        const from = i * filesPerThread
+        const to = (i + 1) * filesPerThread
+        return spawnWorker({ files: files.slice(from, to), contents: contents.slice(from, to) })
+    })
+
+    const results = await Promise.all(workers)
+
+    const userHits: { [name: string]: number } = {}
+
+    results.forEach(resultSlice => {
+        Object.keys(resultSlice).forEach(key => {
+            userHits[key] = (userHits[key] || 0) + (resultSlice[key] || 0)
+        })
+    })
 
     const users = Object.keys(userHits)
 
