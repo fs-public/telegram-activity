@@ -1,8 +1,9 @@
 import { assert } from "./utils"
 import { parse, valid } from "node-html-parser"
 import { workerData, parentPort } from "worker_threads"
+import { UserHits } from "./types"
 
-const analyzeTelegramHtml = (textRaw: string, userHits: { [name: string]: number }) => {
+const analyzeTelegramHtml = (textRaw: string, userHits: UserHits) => {
     assert(valid(textRaw), "Invalid HTML")
 
     const root = parse(textRaw) // parsed HTML object
@@ -19,7 +20,7 @@ const analyzeTelegramHtml = (textRaw: string, userHits: { [name: string]: number
 }
 
 const analysePartial = () => {
-    const userHits = {}
+    const userHits: UserHits = {}
 
     for (let i = 0; i < workerData.length; i++) {
         analyzeTelegramHtml(workerData[i], userHits)
