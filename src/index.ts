@@ -3,11 +3,9 @@ import { assert, getAllFiles, readFile } from "./utils"
 import { parse, valid } from "node-html-parser"
 import { getBracket, getBracketName } from "./brackets"
 
-// .search points to the first character of the match
-
 const userHits: { [key: string]: number } = {} // global
 
-const analyzeHtml = (textRaw: string) => {
+const analyzeTelegramHtml = (textRaw: string) => {
     assert(valid(textRaw), "Invalid HTML")
 
     const root = parse(textRaw) // parsed HTML object
@@ -27,38 +25,31 @@ const main = async () => {
     // Initialize /////////////////////////////////////////
     console.log("Telegram Activity Analysis")
 
-    const textsRaw: string[] = []
-
     const files = getAllFiles(MESSAGES_DIRECTORY)
 
-    for (const file of files) {
-        textsRaw.push(await readFile(file))
-    }
+    const contents = files.map(file => readFile(file))
 
     console.log("All", files.length, "files loaded.")
 
-    // Parse /////////////////////////////////////////
-    for (let i = 0; i < textsRaw.length; i++) {
-        if (i % 10 === 0) console.log("Analyzing", files[i])
-        analyzeHtml(textsRaw[i])
+    // Analyze /////////////////////////////////////////
+    for (let i = 0; i < contents.length; i++) {
+        console.log("Analyzing", files[i])
+        analyzeTelegramHtml(contents[i])
     }
 
     const users = Object.keys(userHits)
 
     console.log("All files parsed and users counted. Total unique users:", users.length)
 
-    // Cumulative /////////////////////////////////////////
-    const userCountPerBracket: { [key: string]: number } = {}
-    for (let i = 0; i < HIT_BRACKETS.length + 1; i++) {
-        userCountPerBracket[getBracketName(i)] = 0
-    }
+    // Cumulative sums /////////////////////////////////////////
 
-    for (const u of users) {
-        const bracket = getBracket(userHits[u])
-        userCountPerBracket[getBracketName(bracket)] += 1
-    }
+    const userCounts = [...Array(HIT_BRACKETS.length + 1)].fill(0)
 
-    console.table(userCountPerBracket)
+    users.forEach(user => userCounts[getBracket(userHits[user])]++)
+
+    // Output as a nice table
+    const userHitsWithKeys = Object.fromEntries(userCounts.map((hits, i) => [getBracketName(i), hits]))
+    console.table(userHitsWithKeys)
 }
 
 main()

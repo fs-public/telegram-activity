@@ -22,7 +22,9 @@ Project runs with `npm` and `node` and has been initialized as a Typescript proj
 
 To analyze a specific Telegram group or channel, open it with Telegram Desktop and export everything (_note that some channels might automatically block you for doing so, as this action creates a very large number of requests_). Move the `.html` files of the export to `./data` directory.
 
-Results of the analysis, i.e. number of unique active users, are outputted in the console in a table breakdown based on the number of messages sent (as found within the export). To analyze over specific timeframe, simply include only the `.html` files corresponding to the timeframe as they are exported sequentially. No additional curation of the files is needed.
+To analyze over specific timeframe, simply include only the `.html` files corresponding to the timeframe as they are exported sequentially. In this case, for best behavior, make sure to fix the file sequence (e.g. `messages2` -> `messages02` so that they follow naturally). No additional curation of the files is needed.
+
+Results of the analysis, i.e. number of unique active users, are outputted in the console in a table breakdown based on the number of messages sent (as found within the export).
 
 An example output follows. This can be read as "there are 32 unique users that sent between 6-9 messages". Custom brackets for this output can be configured in `./src/config.ts`.
 
