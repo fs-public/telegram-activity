@@ -7,10 +7,13 @@
     "scripts": {
         "watch": "tsc -p . --watch",
         "build": "tsc -p .",
-        "start": "node --es-module-specifier-resolution=node ."
+        "lint": "eslint .",
+        "prepare": "npm run build",
+        "start": "node --es-module-specifier-resolution=node --require=./suppress-experimental.cjs ."
     },
     "name": "telegram-activity",
     "devDependencies": {
+        "@types/node": "^20.2.3",
         "@typescript-eslint/eslint-plugin": "^5.59.7",
         "@typescript-eslint/parser": "^5.59.7",
         "eslint": "^8.41.0",
