@@ -26,8 +26,8 @@ const analyzeTelegramHtml = (textRaw, userHits) => {
 const analysePartial = () => {
     const userHits = {}
 
-    for (let i = 0; i < workerData.contents.length; i++) {
-        analyzeTelegramHtml(workerData.contents[i], userHits)
+    for (let i = 0; i < workerData.length; i++) {
+        analyzeTelegramHtml(workerData[i], userHits)
     }
 
     parentPort.postMessage(userHits)

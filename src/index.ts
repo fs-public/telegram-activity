@@ -28,11 +28,9 @@ const main = async () => {
 
     console.log("Spawning", totalThreads, "worker threads")
 
-    const workers = [...Array(totalThreads)].fill(undefined).map((_, i) => {
-        const from = i * filesPerThread
-        const to = (i + 1) * filesPerThread
-        return spawnWorker({ files: files.slice(from, to), contents: contents.slice(from, to) })
-    })
+    const workers = [...Array(totalThreads)]
+        .fill(undefined)
+        .map((_, i) => spawnWorker(contents.slice(i * filesPerThread, (i + 1) * filesPerThread)))
 
     const results = await Promise.all(workers)
 
