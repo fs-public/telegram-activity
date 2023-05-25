@@ -3,11 +3,16 @@ import { getAllFiles, readFile } from "./utils"
 import { getBracket, getBracketName } from "./brackets"
 import { Worker } from "worker_threads"
 
+let analyzedFiles = 0
+
 const spawnWorker = (workerData: any): Promise<{ [name: string]: number }> => {
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
         const worker = new Worker("./src/analysis.js", { workerData })
-        worker.on("message", data => resolve(data))
-        //worker.on("error")
+        worker.on("message", data => {
+            if (typeof data === "number") analyzedFiles += data
+            else resolve(data)
+        })
+        worker.on("error", message => reject(message))
     })
 }
 
@@ -32,7 +37,11 @@ const main = async () => {
         .fill(undefined)
         .map((_, i) => spawnWorker(contents.slice(i * filesPerThread, (i + 1) * filesPerThread)))
 
+    const progressInterval = setInterval(() => console.log("Analyzed", analyzedFiles, "files..."), 1000)
+
     const results = await Promise.all(workers)
+
+    clearInterval(progressInterval)
 
     const userHits: { [name: string]: number } = {}
 
