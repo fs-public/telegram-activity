@@ -5,9 +5,9 @@ import { UserHits } from "../types"
 
 let analyzedFiles = 0
 
-const spawnWorker = (workerData: string[]): Promise<UserHits> => {
+const spawnWorker = (contentsSlice: string[]): Promise<UserHits> => {
     return new Promise((resolve, reject) => {
-        const worker = new Worker(getDistFile("./workers/analysis"), { workerData })
+        const worker = new Worker(getDistFile("./workers/analysis"), { workerData: contentsSlice })
         worker.on("message", (data) => {
             if (typeof data === "number") analyzedFiles += data
             else resolve(data)
