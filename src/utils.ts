@@ -1,4 +1,5 @@
 import fs from "fs"
+import path from "path"
 
 // Assertions
 
@@ -22,7 +23,7 @@ export const getAllFiles = (dir: string) => {
     const files = fs.readdirSync(dir)
 
     files.forEach((file) => {
-        const filePath = dir + "/" + file
+        const filePath = path.join(dir, file)
 
         if (!fs.statSync(filePath).isDirectory()) {
             results.push(filePath)
@@ -30,4 +31,8 @@ export const getAllFiles = (dir: string) => {
     })
 
     return results
+}
+
+export const getDistFile = (relPath: string) => {
+    return path.resolve(path.join("./dist", relPath.replace(".ts", ".js")))
 }
