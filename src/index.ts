@@ -7,6 +7,7 @@ import { stringify } from "csv-stringify/sync"
 const main = async () => {
     // Initialize /////////////////////////////////////////
     console.log("Telegram Activity Analysis")
+    console.log("fs-public\n")
 
     const contents = getAllFiles(MESSAGES_DIRECTORY).map((file) => readFile(file))
 

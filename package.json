@@ -1,5 +1,7 @@
 {
-    "version": "0.1.0",
+    "name": "telegram-activity",
+    "version": "0.2.0",
+    "author": "fs-public",
     "license": "MIT",
     "main": "dist/index.js",
     "typings": "dist/index.d.ts",
@@ -11,7 +13,6 @@
         "prepare": "npm run build",
         "start": "node --es-module-specifier-resolution=node --require=./suppress-experimental.cjs ."
     },
-    "name": "telegram-activity",
     "dependencies": {
         "csv-stringify": "^6.4.0",
         "node-html-parser": "^6.1.4"
@@ -25,6 +26,6 @@
         "typescript": "^5.0.4"
     },
     "engines": {
-        "node": ">=10"
+        "node": ">=16.0.0"
     }
 }

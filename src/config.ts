@@ -1,5 +1,5 @@
 export const MESSAGES_DIRECTORY = "./data"
-export const OUTPUT_FILENAME = "./output/output.csv"
+export const OUTPUT_FILENAME = "./output.csv"
 
 export const HIT_BRACKETS = [1, 5, 9, 19, 49, 99]
 
