@@ -7,11 +7,9 @@ const main = async () => {
     // Initialize /////////////////////////////////////////
     console.log("Telegram Activity Analysis")
 
-    const files = getAllFiles(MESSAGES_DIRECTORY)
+    const contents = getAllFiles(MESSAGES_DIRECTORY).map((file) => readFile(file))
 
-    const contents = files.map((file) => readFile(file))
-
-    console.log("All", files.length, "files loaded.")
+    console.log("All", contents.length, "files loaded.")
 
     // Analyze /////////////////////////////////////////
 

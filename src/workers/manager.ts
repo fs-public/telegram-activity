@@ -17,7 +17,7 @@ const spawnWorker = (workerData: string[]): Promise<UserHits> => {
 }
 
 export const analyzeConcurrently = async (contents: string[]) => {
-    const totalThreads = Math.min(Math.round(contents.length / 25), MAX_WORKER_THREADS)
+    const totalThreads = Math.min(Math.ceil(contents.length / 25), MAX_WORKER_THREADS)
     const filesPerThread = Math.ceil(contents.length / totalThreads)
 
     console.log("Spawning", totalThreads, "worker threads")
