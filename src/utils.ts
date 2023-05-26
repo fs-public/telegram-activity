@@ -21,7 +21,7 @@ export const getAllFiles = (dir: string) => {
 
     const files = fs.readdirSync(dir)
 
-    files.forEach(file => {
+    files.forEach((file) => {
         const filePath = dir + "/" + file
 
         if (!fs.statSync(filePath).isDirectory()) {

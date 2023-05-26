@@ -8,12 +8,12 @@ let analyzedFiles = 0
 
 const spawnWorker = (workerData: string[]): Promise<UserHits> => {
     return new Promise((resolve, reject) => {
-        const worker = new Worker("./dist/analysis.js", { workerData })
-        worker.on("message", data => {
+        const worker = new Worker("./dist/workers/analysis.js", { workerData })
+        worker.on("message", (data) => {
             if (typeof data === "number") analyzedFiles += data
             else resolve(data)
         })
-        worker.on("error", message => reject(message))
+        worker.on("error", (message) => reject(message))
     })
 }
 
@@ -23,7 +23,7 @@ const main = async () => {
 
     const files = getAllFiles(MESSAGES_DIRECTORY)
 
-    const contents = files.map(file => readFile(file))
+    const contents = files.map((file) => readFile(file))
 
     console.log("All", files.length, "files loaded.")
 
@@ -46,8 +46,8 @@ const main = async () => {
 
     const userHits: UserHits = {}
 
-    results.forEach(resultSlice => {
-        Object.keys(resultSlice).forEach(key => {
+    results.forEach((resultSlice) => {
+        Object.keys(resultSlice).forEach((key) => {
             userHits[key] = (userHits[key] || 0) + (resultSlice[key] || 0)
         })
     })
@@ -60,7 +60,7 @@ const main = async () => {
 
     const userCounts = [...Array(HIT_BRACKETS.length + 1)].fill(0)
 
-    users.forEach(user => userCounts[getBracket(userHits[user])]++)
+    users.forEach((user) => userCounts[getBracket(userHits[user])]++)
 
     // Output as a nice table
     const userHitsWithKeys = Object.fromEntries(userCounts.map((hits, i) => [getBracketName(i), hits]))

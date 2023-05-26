@@ -1,7 +1,7 @@
-import { assert } from "./utils"
+import { assert } from "../utils"
 import { parse, valid } from "node-html-parser"
 import { workerData, parentPort } from "worker_threads"
-import { UserHits } from "./types"
+import { UserHits } from "../types"
 
 const analyzeTelegramHtml = (textRaw: string, userHits: UserHits) => {
     assert(valid(textRaw), "Invalid HTML")
