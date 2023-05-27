@@ -1,6 +1,6 @@
 # Telegram Activity
 
-NodeJS utility to parse and analyze Telegram group or channel activity for a breakdown of unique active users.
+NodeJS utility to parse and analyze [Telegram messaging platform](https://telegram.org/) group or channel activity for a breakdown of unique active users.
 
 The application has been utilized in professional settings as a proxy for the intrinsic value of a community, as well as a measure of its real growth. A number of active users gives a much clearer picture than the total number of "joined" accounts.
 
