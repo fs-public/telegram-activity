@@ -30,15 +30,15 @@ Results of the analysis, i.e. the number of unique active users, are outputted i
 
 An example output follows. This can be read as "there are 32 unique users that sent between 6-9 messages". Custom brackets for this output can be configured in `./src/config.ts`.
 
-│ (messages) │ Values │
-| -------- | -------- |
-│ 1 │ 221 │
-│ 2-5 │ 169 │
-│ 6-9 │ 24 │
-│ 10-19 │ 25 │
-│ 20-49 │ 14 │
-│ 50-99 │ 19 │
-│ 100+ │ 3 │
+| Bracket | Unique Users |
+| :-----: | -----------: |
+|    1    |          221 |
+|   2-5   |          169 |
+|   6-9   |           24 |
+|  10-19  |           25 |
+|  20-49  |           14 |
+|  50-99  |           19 |
+|  100+   |            3 |
 
 ### Limitations
 
