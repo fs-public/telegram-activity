@@ -18,38 +18,34 @@ Analysis launches with npm script `npm start`. The configuration such as input/o
 
 ### Technology
 
-The project runs with `npm` and `node` and is written in Typescript. Primary community libraries used are `node-html-parser` for parsing the Telegram exports and `csv-stringify` for CSV output. The exports are computationally intensive, so it is parallelized with node's native `worker-threads`. Code quality assured by `prettier` and `eslint`.
+The project runs with `npm` and `node` and is written in Typescript. Primary community libraries used are `node-html-parser` for parsing the Telegram exports and `csv-stringify` for CSV output. The calculations are computationally intensive, so they are parallelized with node's native `worker-threads`. Code quality assured by `prettier` and `eslint`.
 
 ### Usage
 
-To analyze a specific Telegram group or channel, open it with Telegram Desktop and export everything (_note that some channels might automatically block you for doing so, as this action creates a very large number of requests_). Move the `.html` files of the export to `./data` directory.
+To analyze a specific Telegram group or channel, open it with Telegram Desktop and export everything (_note that some channels might automatically block or ban you for doing so, as this action creates a very large number of requests_). Move the `.html` files of the export to the `./data` directory (not nested).
 
 To analyze over a specific timeframe, simply include only the `.html` files corresponding to the timeframe as they are exported sequentially. In this case, for best behavior, make sure to fix the file sequence (e.g. `messages2` -> `messages02` so that they follow naturally). No additional curation of the files is needed.
 
-Results of the analysis, i.e. the number of unique active users, are outputted in the console in a table breakdown based on the number of messages sent (as found within the export).
+Results of the analysis, i.e. the number of unique active users, are outputted in the console in a table breakdown based on the number of messages sent (as found within the export) as well as exported into a CSV (default `./output.csv`).
 
 An example output follows. This can be read as "there are 32 unique users that sent between 6-9 messages". Custom brackets for this output can be configured in `./src/config.ts`.
 
-```
-|-------------------------|
-│ (messages)  │  Values   │
-|-------------------------|
-│      1      │   221     │
-│     2-5     │   169     │
-│     6-9     │    24     │
-│    10-19    │    25     │
-│    20-49    │    14     │
-│    50-99    │    19     │
-│    100+     │     3     │
-|-------------------------|
-```
+│ (messages) │ Values │
+| -------- | -------- |
+│ 1 │ 221 │
+│ 2-5 │ 169 │
+│ 6-9 │ 24 │
+│ 10-19 │ 25 │
+│ 20-49 │ 14 │
+│ 50-99 │ 19 │
+│ 100+ │ 3 │
 
 ### Limitations
 
--   The functionality may break with a change to Telegram's export format.
+-   The functionality may break with changes to Telegram's export format. (Last test: 30. Jun 2023)
 -   Forwarded messages are not computed correctly (they are double-counted as if the original sender, possibly from a different chat, sent the message as well)
 
 ### Changelog
 
 -   **v0.1.0** (mid-2021): initial version
--   **v0.2.0** (26th May 2023): update and refactor, including concurrency, CSV exports, and `tsdx` library removal due to lack of maintenance
+-   **v0.2.0** (26th May 2023): update and refactor, including concurrency, CSV exports, and `tsdx` library removal due to lack of its maintenance
